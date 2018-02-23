@@ -9,5 +9,12 @@
             "email": "raydelooff@gmail.com"
         }
     ],
-    "require": {}
+    "require": {
+        "vlucas/phpdotenv": "^2.4",
+        "predis/predis": "^1.1",
+        "fzaninotto/faker": "^1.7",
+        "tedivm/stash": "^0.14.2",
+        "phpfastcache/phpfastcache": "^6.1",
+        "symfony/cache": "^4.0"
+    }
 }
