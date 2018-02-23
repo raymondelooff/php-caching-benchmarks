@@ -1,0 +1,13 @@
+{
+    "name": "raymondelooff/php-caching-benchmarks",
+    "description": "Project to benchmark several Redis implementations.",
+    "type": "project",
+    "license": "MIT",
+    "authors": [
+        {
+            "name": "Raymon de Looff",
+            "email": "raydelooff@gmail.com"
+        }
+    ],
+    "require": {}
+}
