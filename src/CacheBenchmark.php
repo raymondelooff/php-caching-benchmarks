@@ -6,7 +6,8 @@ use Symfony\Component\Cache\Simple\RedisCache as SymfonyRedisCache;
 
 /**
  * @BeforeMethods({"init", "fake"})
- * @Revs(20000)
+ * @Revs(2000)
+ * @Iterations(10)
  */
 class CacheBenchmark
 {
