@@ -22,26 +22,35 @@ class CacheBenchmark
         $host = getenv('REDIS_HOST');
         $port = getenv('REDIS_PORT');
 
+        $phpRedis = new Redis();
+        $phpRedis->connect($host, $port);
+
         $this->libraries = array(
-            'PhpRedis' => new Redis(),
+            'PhpRedis' => $phpRedis,
             'Predis' => new Predis\Client(array(
                 'host' => $host,
                 'port' => $port,
             )),
-            // 'Stash' => new Stash\Driver\Redis(),
-            'phpFastCache' => phpFastCache\CacheManager::getInstance('redis', array(
-                'host' => $host,
-                'port' => $port,
-            )),
-            'symfonyCache' => new SymfonyRedisCache(
-                SymfonyRedisCache::createConnection(sprintf('redis://%s:%d', $host, $port))
-            ),
         );
 
-        $this->libraries['PhpRedis']->connect($host, $port);
-        // $this->libraries['Stash']->setOptions(array('servers' => array(
-        //     $host, $port
-        // )));
+        // Symfony Cache Component
+        $this->libraries['symfonyCache'] = new SymfonyRedisCache(
+            SymfonyRedisCache::createConnection(sprintf('redis://%s:%d', $host, $port))
+        );
+
+        // Scrapbook
+        $this->libraries['Scrapbook'] = new \MatthiasMullie\Scrapbook\Adapters\Redis($phpRedis);
+
+        // CakePHP Caching Library
+        $this->libraries['CakePHP'] = Cake\Cache\Cache::config('default', [
+            'className' => 'Redis',
+            'host' => $host,
+            'port' => $port,
+        ]);
+
+        // Doctrine Cache
+        $this->libraries['Doctrine'] = new \Doctrine\Common\Cache\RedisCache();
+        $this->libraries['Doctrine']->setRedis($phpRedis);
     }
 
     public function fake()
@@ -76,42 +85,49 @@ class CacheBenchmark
         $redis->get($this->fakeUuid);
     }
 
-    // public function benchStashSet()
-    // {
-    //     $redis = $this->libraries['Stash'];
-    //     $redis->set($this->fakeUuid, $this->fakeText);
-    // }
-
-    // public function benchStashGet()
-    // {
-    //     $redis = $this->libraries['Stash'];
-    //     $redis->get($this->fakeUuid);
-    // }
-
-    public function benchPhpFastCacheSet()
-    {
-        $redis = $this->libraries['phpFastCache'];
-        $item = $redis->getItem($this->fakeUuid);
-        $item->set($this->fakeText);
-        $redis->save($item);
-    }
-
-    public function benchPhpFastCacheGet()
-    {
-        $redis = $this->libraries['phpFastCache'];
-        $item = $redis->getItem($this->fakeUuid);
-        $item->get();
-    }
-
-    public function benchSymfonyRedisCacheSet()
+    public function benchSymfonyCacheSet()
     {
         $redis = $this->libraries['symfonyCache'];
         $redis->set($this->fakeUuid, $this->fakeText);
     }
 
-    public function benchSymfonyRedisCacheGet()
+    public function benchSymfonyCacheGet()
     {
         $redis = $this->libraries['symfonyCache'];
         $redis->get($this->fakeUuid);
+    }
+
+    public function benchScrapbookSet()
+    {
+        $redis = $this->libraries['Scrapbook'];
+        $redis->set($this->fakeUuid, $this->fakeText);
+    }
+
+    public function benchScrapbookGet()
+    {
+        $redis = $this->libraries['Scrapbook'];
+        $redis->get($this->fakeUuid);
+    }
+
+    public function benchCakePHPSet()
+    {
+        \Cake\Cache\Cache::write($this->fakeUuid, $this->fakeText);
+    }
+
+    public function benchCakePHPGet()
+    {
+        \Cake\Cache\Cache::read($this->fakeUuid);
+    }
+
+    public function benchDoctrineSet()
+    {
+        $redis = $this->libraries['Doctrine'];
+        $redis->save($this->fakeUuid, $this->fakeText);
+    }
+
+    public function benchDoctrineGet()
+    {
+        $redis = $this->libraries['Doctrine'];
+        $redis->fetch($this->fakeUuid);
     }
 }
