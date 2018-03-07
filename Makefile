@@ -12,4 +12,5 @@ build-no-cache:
 	docker build --no-cache -t ${DOCKER_IMAGE_TAG} .
 
 push:
-	docker push ${DOCKER_IMAGE_TAG}
+	docker push ${DOCKER_IMAGE_TAG}:${VERSION}
+	docker push ${DOCKER_IMAGE_TAG}:latest
