@@ -6,14 +6,10 @@ services:
       - REDIS_HOST=redis
       - REDIS_PORT=6379
     networks:
-      data:
-        aliases:
-          - bench.docker
+      - benchmark
   redis:
     image: redis:alpine
     networks:
-      data:
-        aliases:
-          - redis.docker
+      - benchmark
 networks:
-  data: ~
+  benchmark: ~
