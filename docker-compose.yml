@@ -3,13 +3,17 @@ services:
   bench:
     image: raymondelooff/php-caching-benchmarks
     environment:
-      - REDIS_HOST=redis.docker
+      - REDIS_HOST=redis
       - REDIS_PORT=6379
-    links:
-      - redis
-  redis:
-    image: "redis:alpine"
     networks:
-          data:
-            aliases:
-              - redis.docker
+      data:
+        aliases:
+          - bench.docker
+  redis:
+    image: redis:alpine
+    networks:
+      data:
+        aliases:
+          - redis.docker
+networks:
+  data: ~
