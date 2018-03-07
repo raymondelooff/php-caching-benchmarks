@@ -3,7 +3,7 @@ services:
   bench:
     image: raymondelooff/php-caching-benchmarks
     environment:
-      - REDIS_HOST=redis
+      - REDIS_HOST=benchmark_redis
       - REDIS_PORT=6379
     networks:
       - benchmark
