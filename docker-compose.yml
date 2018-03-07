@@ -5,14 +5,5 @@ services:
     environment:
       - REDIS_HOST=redis
       - REDIS_PORT=6379
-    networks:
-      - benchmark
   redis:
     image: redis:alpine
-    networks:
-      benchmark:
-        aliases:
-          - redis
-networks:
-  benchmark:
-    driver: overlay
