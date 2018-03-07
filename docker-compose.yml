@@ -12,4 +12,5 @@ services:
     networks:
       - benchmark
 networks:
-  benchmark: ~
+  benchmark:
+    driver: overlay
