@@ -19,12 +19,13 @@ ENV COMPOSER_ALLOW_SUPERUSER 1
 
 COPY --from=composer:latest /usr/bin/composer /usr/bin/composer
 
-COPY composer.json src/ /usr/src/benchmark/
+COPY composer.json /benchmark/
 
-WORKDIR /usr/src/benchmark/
+WORKDIR /benchmark/
 
-RUN composer global require phpbench/phpbench && \
-    composer install && \
+RUN composer install -o -a --no-dev && \
     composer clear-cache
 
-CMD ["phpbench", "run", "src/"]
+COPY src/ /benchmark/src/
+
+CMD ["/benchmark/vendor/bin/phpbench", "run", "src/"]

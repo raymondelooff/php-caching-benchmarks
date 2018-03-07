@@ -17,6 +17,8 @@
         "cache/cache": "^1.0",
         "matthiasmullie/scrapbook": "^1.4",
         "cakephp/cache": "^3.5",
-        "doctrine/cache": "^1.7"
-    }
+        "doctrine/cache": "^1.7",
+        "phpbench/phpbench": "dev-master"
+    },
+    "minimum-stability": "dev"
 }

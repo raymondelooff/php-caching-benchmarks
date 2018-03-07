@@ -17,8 +17,12 @@ class CacheBenchmark
 
     public function init()
     {
-        $dotenv = new Dotenv\Dotenv(dirname(__DIR__));
-        $dotenv->load();
+        try {
+            $dotenv = new Dotenv\Dotenv(dirname(__DIR__));
+            $dotenv->load();
+        } catch (Exception $e) {
+            // Ignore
+        }
 
         $host = getenv('REDIS_HOST');
         $port = getenv('REDIS_PORT');
