@@ -10,7 +10,9 @@ services:
   redis:
     image: redis:alpine
     networks:
-      - benchmark
+      benchmark:
+        aliases:
+          - redis
 networks:
   benchmark:
     driver: overlay
