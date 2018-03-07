@@ -9,6 +9,7 @@ services:
       - benchmark
   redis:
     image: redis:alpine
+    container_name: redis
     networks:
       - benchmark
 networks:
